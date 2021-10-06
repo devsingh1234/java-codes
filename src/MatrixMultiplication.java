@@ -1,58 +1,72 @@
-
 import java.util.Scanner;
 //Other imports go here, Do NOT change the class name
-class MatrixMultiplication
+class MatrixMultiplication 
 {
-public static void main(String[] args)
-{
- Scanner sc=new Scanner(System.in);
- int x=sc.nextInt();
- while(x>0)
- {
-   int r1,c1,r2,c2,i,j;
-   r1=sc.nextInt();
-   c1=sc.nextInt();
-   int arr[][]=new int[r1][c1];
-   
-   for(i=0;i<r1;i++)
-   {
-     for(j=0;j<c1;j++)
-     {
-       arr[i][j]=sc.nextInt();
-     }
-   }
-   r2=sc.nextInt();
-   c2=sc.nextInt();
-   int b[][]=new int[r2][c2];
-   int res[][]=new int[r1][c2];
-   for(i=0;i<r2;i++)
-   {
-     for(j=0;j<c2;j++)
-     {
-       b[i][j]=sc.nextInt();
-     }
-   }
-   
-   for(i=0;i<r1;i++)
-   {
-     for(j=0;j<c2;j++)
-     {
-       int sum=0;
-       for(int k=0;k<r2;k++)
-       {
-         sum+=arr[i][k]*b[k][j];
-       }
-       res[i][j]=sum;
-     }
-   }
-   for(int r=0;r<r1;r++)
-   {
-     for(int y=0;y<c2;y++)
-       System.out.print(res[r][y]+" ");
-     System.out.println();
-   }
-   x--;
- }
- sc.close();
-}
+	static Scanner sc = new Scanner(System.in);
+	
+    public static void main(String[] args) {
+		System.out.println("Number of calculations: ");
+        int calculations = sc.nextInt();
+        while (calculations > 0) {
+			int[][] matrixA = loadMatrix("A");
+			int[][] matrixB = loadMatrix("B");
+
+			try {
+				int[][] resultingMatrix = multiplicateMatrix(matrixA, matrixB);
+
+				printMatrix(resultingMatrix);	
+			}
+			catch(Exception e) {
+				System.out.println(e.getMessage());
+			}			
+			
+            calculations--;
+        }
+        sc.close();
+    }
+
+	private static int[][] loadMatrix(String matrixIdentifier) {
+		System.out.println("Number of rows to matrix " + matrixIdentifier);
+		int rows = sc.nextInt();
+		System.out.println("Number of cols to matrix " + matrixIdentifier);
+		int cols = sc.nextInt();
+		int matrix[][] = new int[rows][cols];
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				System.out.println("Element " + (i + 1) + ',' + (j + 1) + ':');
+				matrix[i][j] = sc.nextInt();
+			}
+		}
+
+		return matrix;
+	}
+
+	private static int[][] multiplicateMatrix(int[][] matrixA, int[][] matrixB) throws Exception {
+		if (matrixA.length != matrixB[0].length) {
+			throw new Exception("It's not possible to mutiplicate.");
+		}
+		
+		int res[][] = new int[matrixA.length][matrixA.length];
+		
+		for (int i = 0; i < matrixA.length; i++) {
+			for (int j = 0; j < matrixB[0].length; j++) {
+				int sum = 0;
+				for (int k = 0; k < matrixB.length; k++) {
+					sum += matrixA[i][k] * matrixB[k][j];
+				}
+				res[i][j] = sum;
+			}
+		}		
+
+		return res;
+	}
+
+	private static void printMatrix(int[][] matrix) {
+		for (int r = 0; r < matrix.length; r++) {
+			for (int y = 0; y < matrix[r].length; y++)
+				System.out.print(matrix[r][y] + " ");
+			System.out.println();
+		}
+	}
 }
